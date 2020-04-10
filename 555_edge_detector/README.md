@@ -1,38 +1,10 @@
 
-This circuit gives you a pulse on output1 when there is a rising edge in the input and a pulse on output2 when there is a falling edge in the input signal.
+## Edge detection circuit using 555 timer
 
+![alt text](timing_diagram.png "ok")
 
-
-
-Input       _____                    __________________________________
-                |                    |                                |
-                |____________________|                                |________________________________
-
-
-
-
-
-
-Output 1	                         ___
-                                     | |
-         	_________________________| |_______________________________________________________________
-
-
-
-
-
-
-
-Output 2   
-                ___                                                    ___
-                | |                                                    | |
-     		____| |____________________________________________________| |_____________________________
-
-
-
-
-
-I feel there should a simpler way to get this done.
+The pulse length of positive edge and negative can be independelty adjusted.\
+I feel there should be a much simpler way to get this done. (If pulse length for both edges are same)
 
 
 
