@@ -1,39 +1,15 @@
 
-This circuit gives you a pulse on output1 when there is a rising edge in the input and a pulse on output2 when there is a falling edge in the input signal.
+# Edge detection using 555 timer.
 
+The aim is to generate pulses on 2 different outputs when edge is detected on the input.\
+The pulse length of positive edge and negative can be independelty adjusted, change the 100K resistor and 2.2uF capacitor (1.1RC).\
+This can also be done using AND gate with delayed input.
 
-
-
-Input       _____                    __________________________________
-                |                    |                                |
-                |____________________|                                |________________________________
-
-
-
-
-
-
-Output 1	                         ___
-                                     | |
-         	_________________________| |_______________________________________________________________
-
-
-
-
-
-
-
-Output 2   
-                ___                                                    ___
-                | |                                                    | |
-     		____| |____________________________________________________| |_____________________________
-
-
-
-
-
-I feel there should a simpler way to get this done.
-
+### Timing
+![alt text](timing_diagram.png "Timing Diagram")
+### Circuit
+![alt text](circuit_diagram.png "Circuit Diagram")
+____________________________________________________________________________________________________
 
 
 

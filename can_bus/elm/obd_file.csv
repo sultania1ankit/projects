@@ -1,0 +1,29 @@
+PID,Raw_value,Tag-PID,Bytes,Description,Min value,Max value,Units,Formula0,BE3EB813,0,4,PIDs supported [01 - 20],,,,Bit encoded [A7..D0] == [PID $01..PID $20] See below
+1,1076100,1,4,Monitor status since DTCs cleared. (Includes malfunction indicator lamp (MIL) status and number of DTCs.),,,,Bit encoded. See below
+3,100,3,2,Fuel system status,,,,Bit encoded. See below
+4,54,4,1,Calculated engine load,0,100,%,{\displaystyle {\tfrac {100}{255}}A} (or {\displaystyle {\tfrac {A}{2.55}}})
+5,52,5,1,Engine coolant temperature,-40,215,°C,{\displaystyle A-40}
+6,80,6,1,Short term fuel trim—Bank 1,-100 (Reduce Fuel: Too Rich),99.2 (Add Fuel: Too Lean),%,{\displaystyle {\frac {100}{128}}A-100}(or {\displaystyle {\tfrac {A}{1.28}}-100} )
+7,7D,7,1,Long term fuel trim—Bank 1,,,,
+0B,2C,0B,1,Intake manifold absolute pressure,0,255,kPa,{\displaystyle A}
+0C,0FC2,0C,2,Engine RPM,0,16383.75,rpm,{\displaystyle {\frac {256A+B}{4}}}
+0D,0,0D,1,Vehicle speed,0,255,km/h,{\displaystyle A}
+0E,8D,0E,1,Timing advance,-64,63.5,° before TDC,{\displaystyle {\frac {A}{2}}-64}
+0F,4E,0F,1,Intake air temperature,-40,215,°C,{\displaystyle A-40}
+11,2D,11,1,Throttle position,0,100,%,{\displaystyle {\tfrac {100}{255}}A}
+13,3,13,1,Oxygen sensors present (in 2 banks),,,,"[A0..A3] == Bank 1, Sensors 1-4. [A4..A7] == Bank 2..."
+14,5B80,14,2,Oxygen Sensor 1   A: Voltage   B: Short term fuel trim,0 and 100,1.275 and 99.2,Volts and %,"{\displaystyle {\frac {A}{200}}}{\displaystyle {\frac {100}{128}}B-100}(if B==$FF, sensor is not used in trim calculation)"
+15,5AFF,15,2,Oxygen Sensor 2   A: Voltage   B: Short term fuel trim,0 and 100,1.275 and 99.2,Volts and %,
+1C,20,1C,1,OBD standards this vehicle conforms to,,,,Bit encoded. See below
+1F,000A,1F,2,Run time since engine start,0,65535,seconds,{\displaystyle 256A+B}
+20,8005A001,20,4,PIDs supported [21 - 40],,,,Bit encoded [A7..D0] == [PID $21..PID $40] See below
+21,000C,21,2,Distance traveled with malfunction indicator lamp (MIL) on,0,65535,km,{\displaystyle 256A+B}
+2E,0,2E,1,Commanded evaporative purge,0,100,%,{\displaystyle {\tfrac {100}{255}}A}
+30,58,30,1,Warm-ups since codes cleared,0,255,count,{\displaystyle A}
+31,04BF,31,2,Distance traveled since codes cleared,0,65535,km,{\displaystyle 256A+B}
+33,61,33,1,Absolute Barometric Pressure,0,255,kPa,{\displaystyle A}
+40,7AD00000,40,4,PIDs supported [41 - 60],,,,Bit encoded [A7..D0] == [PID $41..PID $60] See below
+42,373C,42,2,Control module voltage,0,65.535,V,{\displaystyle {\frac {256A+B}{1000}}}
+43,005A,43,2,Absolute load value,0,25700,%,{\displaystyle {\tfrac {100}{255}}(256A+B)}
+44,8000,44,2,Fuel–Air commanded equivalence ratio,0,< 2,ratio,{\displaystyle {\tfrac {2}{65536}}(256A+B)}
+49,32,49,1,Accelerator pedal position D,,,,
