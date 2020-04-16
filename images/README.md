@@ -1,7 +1,7 @@
 ## Images
 
-![](arm_bot_1.png)
-![](arm_bot_2.png)
+### arm_bot_1 ![](arm_bot_1.png)
+### arm_bot_2 ![](arm_bot_2.png)
 ![](bot.jpg)
 ![](digital_dice.jpg)
 ![](Drone.jpg)
