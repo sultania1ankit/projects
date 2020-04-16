@@ -1,3 +1,11 @@
+
+
+
+ # DEVICE<-----------------> Relay_Server<-----------------> Primary Server
+ #                                        ----------------->Secondary Server
+
+
+
 import sys
 import time
 import datetime
@@ -8,7 +16,7 @@ from socketserver import ThreadingMixIn
 import select
 
 
-sys.stdout.write('\u001b[40m')
+sys.stdout.write('\u001b[40m') # clear screen and display header
 sys.stdout.write('\x1b[2J')
 sys.stdout.write('\x1b[H')
 # sys.stdout.write('\u001B[?25l')
@@ -17,27 +25,27 @@ sys.stdout.write("\n")
 sys.stdout.write('\u001b[5m')
 sys.stdout.write('\u001b[115C')
 sys.stdout.write('\u001b[37m')
-sys.stdout.write("RELAY SERVER (WORK IN PROGRESS)")
+sys.stdout.write("RELAY SERVER")
 sys.stdout.write('\u001b[0m')
 sys.stdout.write('\u001b[40m')
 sys.stdout.flush()
 
 
-print("\u001b[33m\n\nTunnel Will Acknowledge the Device,if needed. No data will be received for the Forward Server.\n")
+print("\u001b[33m\n\nPrimary Will Acknowledge the Device,if needed. No data will be received for the secondary server.\n")
 
-sys.stdout.write('\u001b[32m\nYou can choose the Corresponding Numbers while Selecting Tunnel and Forward IP.(If Ports are also provided they will be auto selected)\n')
+sys.stdout.write('\u001b[32m\nYou can choose the Corresponding Numbers while Selecting primary and secondary IP.(If Ports are also provided they will be auto selected)\n')
 
 stored_IP=[["BLANK","0.0.0.0",0],["NGROK","3.19.114.185"],["Local","234.216.54.345",5446]]
 
-for x in range(1,len(stored_IP)):
-    sys.stdout.write('\n\u001b[37m'+str(x)+".\u001b[32m")
-    for y in range(0,len(stored_IP[x])):
-        if(y==0):
-            sys.stdout.write(str(stored_IP[x][y])+" - ")
-        elif(y==2):
-            sys.stdout.write(":"+str(stored_IP[x][y]))
+for display_IP in range(1,len(stored_IP)): #print saved IP and ports
+    sys.stdout.write('\n\u001b[37m'+str(display_IP)+".\u001b[32m")
+    for display_port in range(0,len(stored_IP[display_IP])):
+        if(display_port==0):
+            sys.stdout.write(str(stored_IP[display_IP][display_port])+" - ")
+        elif(display_port==2):
+            sys.stdout.write(":"+str(stored_IP[display_IP][display_port]))
         else:    
-            sys.stdout.write(str(stored_IP[x][y]))
+            sys.stdout.write(str(stored_IP[display_IP][display_port]))
 
 
 
@@ -45,36 +53,36 @@ print("\u001b[33m\n\n")
 
 
 TCP_PORT=int(input("Listener Port: "))
-tunnel_ip=str(input("Tunnel Client IP: "))
-try:
-    pick_int=int(tunnel_ip)
+primary_server=str(input("Primary Client IP: "))
+try: #check if saved IP port are being used
+    pick_int=int(primary_server)
     if(len(stored_IP[pick_int])==2):
-        tunnel_ip=stored_IP[pick_int][1]
-        tunnel_port=int(input("Tunnel Client Port: "))
+        primary_server=stored_IP[pick_int][1]
+        primary_port=int(input("Primary Client Port: "))
     elif(len(stored_IP[pick_int])==3):
-        tunnel_ip=stored_IP[pick_int][1]
-        tunnel_port=stored_IP[pick_int][2]
+        primary_server=stored_IP[pick_int][1]
+        primary_port=stored_IP[pick_int][2]
 except:
-    tunnel_port=int(input("Tunnel Client Port: "))
+    primary_port=int(input("Primary Client Port: "))
 
-forward_ip=str((input("Forward Server IP(Press 0 to Skip): ")))
-try:
-    pick_int=int(forward_ip)
+secondary_server=str((input("Secondary Server IP(Press 0 to Skip): ")))
+try: #check if saved IP port are used or option is skipped.
+    pick_int=int(secondary_server)
     if(len(stored_IP[pick_int])==2):
-        forward_ip=stored_IP[pick_int][1]
-        forward_port=int(input("Forward Server Port: "))
-        forward_flag=int(input("Press 1 to allow Script to run even if Forward server is Down, else press 0: "))
+        secondary_server=stored_IP[pick_int][1]
+        secondary_port=int(input("Secondary Server Port: "))
+        secondary_priority=int(input("Press 1 to allow Script to run even if secondary server is Down, else press 0: "))
     elif(len(stored_IP[pick_int])==3):
-        forward_ip=stored_IP[pick_int][1]
-        forward_port=stored_IP[pick_int][2]
-        if(forward_port!=0):
-            forward_flag=int(input("Press 1 to allow Script to run even if Forward server is Down, else press 0: "))
+        secondary_server=stored_IP[pick_int][1]
+        secondary_port=stored_IP[pick_int][2]
+        if(secondary_port!=0):
+            secondary_priority=int(input("Press 1 to allow Script to run even if secondary server is Down, else press 0: "))
 except:
-    forward_port=int(input("Forward Server Port: "))
-    forward_flag=int(input("Press 1 to allow Script to run even if Forward server is Down, else press 0: "))
+    secondary_port=int(input("Secondary Server Port: "))
+    secondary_priority=int(input("Press 1 to allow Script to run even if secondary server is Down, else press 0: ")) 
 
 
-sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM) #setup socket for reading data stream
 sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
 server_address=('0.0.0.0',TCP_PORT)
 sock.settimeout(None)
@@ -82,7 +90,7 @@ timeout=1  ## this is select timeout not socket timeout
 sock.bind(server_address)
 
 
-class ClientThread(Thread): 
+class ClientThread(Thread):  # Accept a new connection request and connect to primary and secondary servers
  
     def __init__(self,ip,port,conn): 
         Thread.__init__(self) 
@@ -93,29 +101,39 @@ class ClientThread(Thread):
         self.conn.settimeout(None)
         self.connect_kill_timer=int(time.time())
         print("Connection Request Accepted.")
-        sys.stdout.write("Connecting to Tunnel ... ")
-        self.tunnel=socket.socket()
+        sys.stdout.write("Connecting to primary ... ")
+        self.primary=socket.socket()
         try:
-            self.tunnel.connect((tunnel_ip,tunnel_port))
-            self.tunnel.setblocking(0)
-            print("Connected to Tunnel.")
+            self.primary.connect((primary_server,primary_port))
+            self.primary.setblocking(0)
+            print("Connected to primary.")
         except Exception as exception:
-            print("Error Connecting to Tunnel, will proceed and retry at later stage  -",exception)
-        if(forward_port!=0):
-            sys.stdout.write("Connecting to Forward Server...")
-            self.forward=socket.socket()
+            print("Error Connecting to primary, will proceed and retry at later stage  -",exception)
+        if(secondary_port!=0):
+            sys.stdout.write("Connecting to secondary Server...")
+            self.secondary=socket.socket()
             try:
-                self.forward.connect((forward_ip,forward_port))
-                print("Connected to Forward Server.")
+                self.secondary.connect((secondary_server,secondary_port))
+                print("Connected to secondary Server.")
             except Exception as exception:
-                print("Error Connecting to Forward Server, will proceed and retry at later stage  -",exception)
+                print("Error Connecting to secondary Server, will proceed and retry at later stage  -",exception)
 
  
-    def run(self):
+    def run(self): 
+        #receive data from device
+        #send to primary
+        #send to secondary server if it is set, if transmission failed and secondary_prioprity is set then kill the thread.
+        #if data is received from the primary server, send it to device.
+
+        # Color codes
+        # Data from device - orange
+        # ACk from primary - green
+        # Thread related information - magenta
+
         self.device_packet=0
         self.server_ack=0
         try:
-            while(self.device_packet!=b'' and self.server_ack!=b''):
+            while(self.device_packet!=b'' and self.server_ack!=b''): #if data from device sent it to primary and secondary
                 # print(self,"TimeStamp:",datetime.datetime.fromtimestamp(time.time()+((5*60+30)*60)).strftime("%A %d %B %Y %I:%M%p"))
                 # print(self,self.conn)
                 self.conn_ready=select.select([self.conn],[],[],timeout)
@@ -124,44 +142,44 @@ class ClientThread(Thread):
                         self.device_packet = self.conn.recv(4096)
                         sys.stdout.write('\u001b[33m') #yellow
                         print(self,"Packet from Device received on  -  ",datetime.datetime.fromtimestamp(time.time()+((5*60+30)*60)).strftime("%A %d %B %Y %I:%M%p"))
-                        self.connect_kill_timer=int(time.time())
+                        self.connect_kill_timer=int(time.time()) #watchdog timer for thread
                         print(self,"Device PKT: ",self.device_packet)
-                        sys.stdout.write("Sending to tunnel. . .       ")
+                        sys.stdout.write("Sending to primary. . .       ")
                         try:
-                            self.tunnel.sendall(self.device_packet)
-                            print("Sent to Tunnel.")
+                            self.primary.sendall(self.device_packet)
+                            print("Sent to primary.")
                         except BrokenPipeError:
-                            print("Not sent to tunnel.")
-                            self.tunnel.close()
-                            self.tunnel=socket.socket()
-                            print("Retrying connection to tunnel. . .")
-                            self.tunnel.connect((tunnel_ip,tunnel_port))
-                            self.tunnel.setblocking(0)
-                            print("Connected to Tunnel.")
-                            self.tunnel.sendall(self.device_packet)
-                            print("Sent to Tunnel.")
+                            print("Not sent to primary.")
+                            self.primary.close()
+                            self.primary=socket.socket()
+                            print("Retrying connection to primary. . .")
+                            self.primary.connect((primary_server,primary_port))
+                            self.primary.setblocking(0)
+                            print("Connected to primary.")
+                            self.primary.sendall(self.device_packet)
+                            print("Sent to primary.")
                         except Exception as exception:
-                            print("While forwarding to Tunnel -",exception)
+                            print("While secondarying to primary -",exception)
 
-                        if(forward_port!=0):
+                        if(secondary_port!=0):
                             try:
-                                sys.stdout.write("Sending to Forward Server. .  ")
-                                self.forward.sendall(self.device_packet)
-                                print("Sent to Forward Server.")
+                                sys.stdout.write("Sending to secondary Server. .  ")
+                                self.secondary.sendall(self.device_packet)
+                                print("Sent to secondary Server.")
                             except Exception as exception:
-                                print("Not sent to Forward Server - ",exception)
-                                print("Trying to reconnect to Forward Server.")
+                                print("Not sent to secondary Server - ",exception)
+                                print("Trying to reconnect to secondary Server.")
                                 try:
-                                    self.forward=socket.socket()
-                                    self.forward.connect((forward_ip,forward_port))
-                                    print("Connected to Forward Server.")
-                                    self.forward.sendall(self.device_packet)
-                                    print("Sent to Forward Server.")
+                                    self.secondary=socket.socket()
+                                    self.secondary.connect((secondary_server,secondary_port))
+                                    print("Connected to secondary Server.")
+                                    self.secondary.sendall(self.device_packet)
+                                    print("Sent to secondary Server.")
                                 except Exception as exception:
-                                    if(forward_flag==1):
-                                        print("Error Connecting to Forward Server, will pass-",exception)
+                                    if(secondary_priority==1):
+                                        print("Error Connecting to secondary Server, will pass-",exception)
                                     else:
-                                        print("Error Connecting to Forward Server, will terminate - ",exception)
+                                        print("Error Connecting to secondary Server, will terminate - ",exception)
                                         break
 
                         print("_______________________________________________________________________________________________________________________________________________________________________")
@@ -172,13 +190,13 @@ class ClientThread(Thread):
 
 
 
-                self.tunnel_ready=select.select([self.tunnel],[],[],timeout)
-                if(self.tunnel_ready[0]):
+                self.primary_ready=select.select([self.primary],[],[],timeout) # If data is received from primary send it to device.
+                if(self.primary_ready[0]):
                     try:
-                        self.server_ack=self.tunnel.recv(4096)
+                        self.server_ack=self.primary.recv(4096)
                         self.connect_kill_timer=int(time.time())
                         sys.stdout.write('\u001b[32m') #green
-                        print(self,"Packet from Tunnel received on  -  ",datetime.datetime.fromtimestamp(time.time()+((5*60+30)*60)).strftime("%A %d %B %Y %I:%M%p"))
+                        print(self,"Packet from primary received on  -  ",datetime.datetime.fromtimestamp(time.time()+((5*60+30)*60)).strftime("%A %d %B %Y %I:%M%p"))
                         print(self,"ACK: ",self.server_ack)
                         sys.stdout.write("ACK'ing Device. . .       ")
                         try:
@@ -192,7 +210,7 @@ class ClientThread(Thread):
                         break
 
 
-                if((int(time.time())-self.connect_kill_timer)>(60*10)):
+                if((int(time.time())-self.connect_kill_timer)>(60*10)): #if watchdog overflow, kill thread
                     sys.stdout.write('\u001b[35m') #magenta
                     print("Timer overflow occured.")
                     break
@@ -200,20 +218,20 @@ class ClientThread(Thread):
 
         except Exception as exception:
             sys.stdout.write('\u001b[35m') #magenta
-            print(self,"Closing Conn and Tunnel - ",exception)
+            print(self,"Closing Conn and primary - ",exception)
             self.conn.close()
-            self.tunnel.close()
-            if(forward_port!=0):
-                print("Closing Forward.")
-                self.forward.close()
+            self.primary.close()
+            if(secondary_port!=0):
+                print("Closing secondary.")
+                self.secondary.close()
         else:
             sys.stdout.write('\u001b[35m') #magenta
-            print(self,"No exception raised,Closing Conn and Tunnel.")
+            print(self,"No exception raised,Closing Conn and primary.")
             self.conn.close()
-            self.tunnel.close()
-            if(forward_port!=0):
-                print("Closing Forward.")
-                self.forward.close()
+            self.primary.close()
+            if(secondary_port!=0):
+                print("Closing secondary.")
+                self.secondary.close()
 
 
 

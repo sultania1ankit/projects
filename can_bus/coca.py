@@ -11,8 +11,8 @@ file=open(file_name,"r")
 
 #_______________________________________________________________________________________________________________________________
 
-def display_head():
-	sys.stdout.write('\u001b[40m')
+def display_head(): # clear display and write the static content like heaeder and command information
+	sys.stdout.write('\u001b[40m') 
 	sys.stdout.write('\x1b[2J')
 	sys.stdout.write('\x1b[H')
 	sys.stdout.write("\u001b[1E")
@@ -65,7 +65,7 @@ mask_9=[]
 mask_0=[]
 mask=0
 
-def party_screen():
+def party_screen(): #this prints "PARTY" all over the screen 
 	global temp_color
 	global clear_screen_party
 	if(clear_screen_party==1):
