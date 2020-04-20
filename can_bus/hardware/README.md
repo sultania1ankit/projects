@@ -15,7 +15,7 @@ To upload code in ESP32, First [setup ESP-IDF](https://docs.espressif.com/projec
 * "python3 can_reader.py port_name"
 
 Check "vcan.log", it should look like this.\
-![raw_logs](vcan_log.png "raw_logs")
+![raw_logs](../images/vcan_log.png "raw_logs")
 
 This file is almost compatible with socketcan library provided in linux.
 
