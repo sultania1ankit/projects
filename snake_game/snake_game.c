@@ -35,12 +35,12 @@ __uint8_t __strlen(__uint8_t *str) // get string length upto 255
 
 void __strcat(__uint8_t *str1,__uint8_t *str2)  // append the second string on the end of first string, the size of first string should have enough length (check what happends when its not) 
 {
-	while(*str1!='\0'){str1+=1;}
+	while(*str1!='\0'){str1++;}
 	while(*str2!='\0')
 	{
 		*str1=*str2;
-		str1+=1;
-		str2+=1;
+		++str1;
+		++str2;
 	}
 	*str1='\0';
 }
