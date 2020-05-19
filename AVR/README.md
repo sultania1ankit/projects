@@ -1,4 +1,4 @@
-#### AVR Walker (Incomplete)
+## AVR Walker (Incomplete)
 
 * UART_handle(Python) - Communication,Upload code via Bootloader
 * Bootloader - seprate handles for FLASH and EEPROM
@@ -11,7 +11,7 @@ Some basic tips for optimised codes for microcontrollers.
 
 We will use ATMEGA328P for this AVR tutorial because . . . ARDUINO 
 
-## Tools:-
+#### Tools:-
 
 * Linux - Windows user will have to modify the UART_handle,See comments in the same.
 * MPLAB v5.30 - Compilier used was XC8 v2.10 
@@ -20,14 +20,14 @@ We will use ATMEGA328P for this AVR tutorial because . . . ARDUINO
                          You can use any setup having AVR-ISP programmer,ATMEGA328P and a USB to TTL converter and few jumpers.   
                          Using 2 Uno's - 2 USB cables - one ICSP header cable and 1 jumper for reset pin is the best.
 
-## Future Goals:-
+#### Future Goals:-
 
 Using these tools to build...
 * RTOS for some AVR controller. (Mostly ATMEGA328P)
 * Complete Core for ATTINY45. (This might take some time) 
 
 
-## Sources:-
+#### Sources:-
 
 * AVR-GCC guide (http://ww1.microchip.com/downloads/en/DeviceDoc/MPLAB_XC8_C_Compiler_User_Guide_for_AVR.pdf)
 * XC8 Compiler Guide(http://ww1.microchip.com/downloads/en/devicedoc/50002053g.pdf)
