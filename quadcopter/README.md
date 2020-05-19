@@ -1,6 +1,6 @@
 ## Basic quadcopter
 
-[quadcopter](https://youtu.be/Zgv_2BgS3I4 "Quadcopter Demo")
+[![quadcopter](../images/Drone.jpg)](https://youtu.be/Zgv_2BgS3I4 "Quadcopter")
 
 #### Suggestion
 
