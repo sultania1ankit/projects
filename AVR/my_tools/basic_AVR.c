@@ -429,3 +429,23 @@ void spi_rx(uint8_t *data,uint8_t size) // This data will be Transmitted
 	while(size!=0);
 	SPI_DDR |= (1 << SS);
 }
+
+//________________________________________________________________bootloader______________________________________________________
+
+void boot_basic_setup()
+{
+
+}
+
+void boot_UART_setup()
+{
+    sei();
+	UBRR0=MYUBRR;
+	UCSR0B=(1<<RXCIE0)|(1<<RXEN0)|(1<<TXEN0);
+	UCSR0C=0b00000110;
+}
+
+uint8_t boot_catch_handle()
+{
+	
+}

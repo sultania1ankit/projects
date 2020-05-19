@@ -96,6 +96,11 @@ void spi_tx(uint8_t *data,uint8_t size);
 void spi_rx(uint8_t *data,uint8_t size); // This data will be Transmitted
 
 //-------------------------------------------------------------------
+
+void boot_basic_setup();
+void boot_UART_setup();
+uint8_t boot_catch_handle();
+
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
