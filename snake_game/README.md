@@ -33,9 +33,7 @@ to terminal.
 * This screen resolution can affect how the game looks, in order to fix this grep the screen resolution and make the game according to scale, currently it acts as if display is 1920x1080.
 
 You can see below how the same code generates different results on the same laptop after changing the OS from Linux Mint to POP OS.
-
-- [ ] working 
-- [x] not working 
+ 
 
 Linux Mint
 ![Snake_game_Mint](../images/snake_game.png)
