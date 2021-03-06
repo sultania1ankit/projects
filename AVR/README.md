@@ -1,5 +1,8 @@
 ## AVR Walker (Incomplete)
 
+> This was my first attempt to learn more about embedded programming, i think that their is a ocean of proper documentaion for AVR controllers along with so many people on various forums to help you.\
+These documents contain my take on conecpts like bootloaders, makefile and compiliers.
+
 * UART_handle(Python) - Communication,Upload code via Bootloader
 * Bootloader - seprate handles for FLASH and EEPROM
 * Handles(Functions) for various peripherals 
@@ -33,4 +36,6 @@ Using these tools to build...
 * XC8 Compiler Guide(http://ww1.microchip.com/downloads/en/devicedoc/50002053g.pdf)
 * Microchip developer help (https://microchipdeveloper.com/)
 
-______________________________________________________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________
+
+
