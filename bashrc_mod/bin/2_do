@@ -1,0 +1,1 @@
+X=$(cat /home/ankit_sultania/codes/P_channel_poet/2_do.notes) ; zenity --info --title="ColdPigeon" --text="$X" --width=2400

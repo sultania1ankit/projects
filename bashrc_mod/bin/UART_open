@@ -1,0 +1,1 @@
+putty -load USB0_115200 -geometry 65x100+1600+0 -title USB0_115200 & putty -load USB1_115200 -geometry 65x100+1000+0 -title USB1_115200 & putty -load USB2_115200 -geometry 65x100+400+0 -title USB2_115200

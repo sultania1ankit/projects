@@ -1,0 +1,1 @@
+putty -load STM_USB -geometry 65x100+1600+0 -title STM_ACM0

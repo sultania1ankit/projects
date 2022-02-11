@@ -1,0 +1,1 @@
+X=$(cd /home/ankit_sultania/codes/P_channel_poet/ ; zenity --file-selection --file-filter=*.notes ); subl $X
