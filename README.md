@@ -9,8 +9,8 @@ These have not been modified for convienence, however all the resource should be
 
 <br />
 <div align="center">
-  <a href="https://github.com/sultania1ankit/projects/blob/master/images/my_icons/thumb_o_bold.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://github.com/sultania1ankit/">
+    <img src="https://github.com/sultania1ankit/projects/blob/master/images/my_icons/thumb_o_bold.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">It should Work :grin:</h3>
@@ -21,11 +21,11 @@ These have not been modified for convienence, however all the resource should be
     <a href="https://github.com/sultania1ankit/projects/"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/sultania1ankit/">View Demo</a>
+    <a href="https://github.com/sultania1ankit/projects/">View Demo</a>
     ·
-    <a href="https://github.com/sultania1ankit/">Report Bug</a>
+    <a href="https://github.com/sultania1ankit/projects/">Report Bug</a>
     ·
-    <a href="https://github.com/sultania1ankit/">Request Feature</a>
+    <a href="https://github.com/sultania1ankit/projects/">Request Feature</a>
   </p>
 </div>
 
