@@ -10,7 +10,7 @@ These have not been modified for convienence, however all the resource should be
 <br />
 <div align="center">
   <a href="https://github.com/sultania1ankit/">
-    <img src="https://github.com/sultania1ankit/projects/blob/master/images/my_icons/thumb_o_bold.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/sultania1ankit/projects/blob/master/images/my_icons/icon_white_bg.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">It should Work :grin:</h3>
